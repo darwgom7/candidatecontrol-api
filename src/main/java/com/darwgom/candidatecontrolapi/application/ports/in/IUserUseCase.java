@@ -11,7 +11,8 @@ public interface IUserUseCase {
     List<UserResponseDTO> getAllUsers();
     UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO);
     MessageResponseDTO deleteUser(Long id);
-
     TokenResponseDTO loginUser(LoginRequestDTO loginRequestDTO);
+    UserResponseDTO getCurrentUser(String jwt);
+    MessageResponseDTO logoutUser(String jwt);
 
 }

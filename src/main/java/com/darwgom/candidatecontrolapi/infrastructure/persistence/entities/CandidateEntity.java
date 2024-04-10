@@ -14,6 +14,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "candidates")
@@ -37,11 +41,15 @@ public class CandidateEntity {
     private GenderEnum gender;
 
     @Column(name = "salary_expected")
-    private Double salaryExpected;
+    private BigDecimal salaryExpected;
 
     @Column(name = "phone_number")
     private String phoneNumber;
 
     private String address;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
 }

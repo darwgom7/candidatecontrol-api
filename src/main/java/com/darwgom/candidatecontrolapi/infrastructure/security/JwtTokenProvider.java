@@ -3,6 +3,7 @@ package com.darwgom.candidatecontrolapi.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Setter
 @Component
 public class JwtTokenProvider {
 

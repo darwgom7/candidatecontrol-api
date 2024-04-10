@@ -19,6 +19,7 @@ public class User {
     private String password;
     private RoleEnum role;
     private LocalDateTime lastLogin;
+    private LocalDateTime createdAt;
 
 }
 

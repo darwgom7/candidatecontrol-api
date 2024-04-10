@@ -129,6 +129,28 @@ public class UserUseCase implements IUserUseCase {
         return new MessageResponseDTO("User deleted successfully");
     }
 
+    @Override
+    public UserResponseDTO getCurrentUser(String jwt) {
+        if (jwt == null || jwt.isEmpty()) {
+            throw new ValueNotFoundException("No JWT token found in request headers");
+        }
+        String username = jwtTokenProvider.getUsernameFromToken(jwt);
+        User user = userPort.findByUsername(username);
+        if (user == null) {
+            throw new EntityNotFoundException("User not found with username: " + username);
+        }
+        return modelMapper.map(user, UserResponseDTO.class);
+    }
+
+    @Override
+    public MessageResponseDTO logoutUser(String jwt) {
+        if (jwt == null || jwt.isEmpty()) {
+            return new MessageResponseDTO("No JWT token found");
+        }
+        jwtTokenProvider.invalidateToken(jwt);
+        return new MessageResponseDTO("User logged out successfully.");
+    }
+
     private String normalizeRoleType(String type) {
         if (type == null) {
             throw new IllegalParamException("Role type cannot be null");

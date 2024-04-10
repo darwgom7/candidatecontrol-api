@@ -1,7 +1,13 @@
 package com.darwgom.candidatecontrolapi.infrastructure.web.controllers;
 
 import com.darwgom.candidatecontrolapi.application.ports.in.IUserUseCase;
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.*;
+import com.darwgom.candidatecontrolapi.infrastructure.security.JwtTokenProvider;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.UserRequestDTO;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.UserResponseDTO;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.LoginRequestDTO;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.TokenResponseDTO;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.MessageResponseDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -25,6 +32,9 @@ public class UserController {
 
     @Autowired
     private IUserUseCase userUseCase;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
@@ -61,4 +71,17 @@ public class UserController {
         MessageResponseDTO responseDTO = userUseCase.deleteUser(id);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDTO> getCurrentUser(@RequestHeader("Authorization") String jwtHeader) {
+        UserResponseDTO responseDTO = userUseCase.getCurrentUser(jwtHeader.replace("Bearer ", ""));
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<MessageResponseDTO> logoutUser(@RequestHeader("Authorization") String jwtHeader) {
+        MessageResponseDTO responseDTO = userUseCase.logoutUser(jwtHeader.replace("Bearer ", ""));
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 }
