@@ -21,9 +21,7 @@ import java.util.Collections;
 
 @Setter
 public class JwtTokenFilter extends OncePerRequestFilter {
-
     private final SecretKey secretKey;
-
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
@@ -32,9 +30,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.extractJwtFromRequest(request);
+
         try {
             if (isPublicEndpoint(request.getRequestURI())) {
                 filterChain.doFilter(request, response);
@@ -43,9 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             if (token == null || !jwtTokenProvider.isTokenValid(token)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("application/json");
-                response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse("JWT token is invalid or expired")));
-                response.getWriter().flush();
+                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -58,13 +54,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
-
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse("Error processing JWT")));
-            response.getWriter().flush();
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -72,8 +65,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicEndpoint(String requestURI) {
-        return requestURI.contains("/api/users/register") || requestURI.contains("/api/users/login");
+        return requestURI.startsWith("/api/users/register") ||
+                requestURI.startsWith("/api/users/login") ||
+                requestURI.startsWith("/swagger-ui/") ||
+                requestURI.startsWith("/swagger-ui/**") ||
+                requestURI.startsWith("/v3/api-docs") ||
+                requestURI.startsWith("/v3/api-docs/**");
     }
-
 }
 
