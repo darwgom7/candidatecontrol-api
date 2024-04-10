@@ -1,8 +1,6 @@
 package com.darwgom.candidatecontrolapi.application.ports.in;
 
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.UserResponseDTO;
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.UserRequestDTO;
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.MessageResponseDTO;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.*;
 
 import java.util.List;
 
@@ -13,5 +11,7 @@ public interface IUserUseCase {
     List<UserResponseDTO> getAllUsers();
     UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO);
     MessageResponseDTO deleteUser(Long id);
+
+    TokenResponseDTO loginUser(LoginRequestDTO loginRequestDTO);
 
 }

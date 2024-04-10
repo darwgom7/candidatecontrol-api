@@ -2,8 +2,7 @@ package com.darwgom.candidatecontrolapi.domain.enums;
 
 public enum RoleEnum {
 
-    ROLE_ADMIN("role_admin"),
-    ROLE_CANDIDATE("role_candidate");
+    ROLE_ADMIN("role_admin");
 
     private final String value;
 

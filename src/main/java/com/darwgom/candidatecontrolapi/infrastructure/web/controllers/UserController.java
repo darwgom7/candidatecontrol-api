@@ -1,9 +1,7 @@
 package com.darwgom.candidatecontrolapi.infrastructure.web.controllers;
 
 import com.darwgom.candidatecontrolapi.application.ports.in.IUserUseCase;
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.UserRequestDTO;
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.UserResponseDTO;
-import com.darwgom.candidatecontrolapi.infrastructure.web.dto.MessageResponseDTO;
+import com.darwgom.candidatecontrolapi.infrastructure.web.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +30,12 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
         UserResponseDTO responseDTO = userUseCase.registerUser(userRequestDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponseDTO> loginUser(@RequestBody LoginRequestDTO loginRequestDTO) {
+        TokenResponseDTO responseDTO = userUseCase.loginUser(loginRequestDTO);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

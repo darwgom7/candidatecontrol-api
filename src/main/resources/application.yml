@@ -25,3 +25,7 @@ server:
   port: 8080
   error:
     include-stacktrace: never
+
+jwt:
+  secret: CABD8E152F81B8FBEBB3885B66E16A9085E1B67180D43738D2E969573D35D4F2
+  validityInMilliseconds: 3600000 # 120000

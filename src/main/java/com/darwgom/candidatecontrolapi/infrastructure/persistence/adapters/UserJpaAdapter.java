@@ -52,8 +52,7 @@ public class UserJpaAdapter implements IUserPort {
     @Override
     public User findByUsername(String username) {
         Optional<UserEntity> optionalEntity = userRepository.findByUsername(username);
-        return optionalEntity.map(entity -> modelMapper.map(entity, User.class))
-                .orElse(null);
+        return optionalEntity.map(entity -> modelMapper.map(entity, User.class)).orElse(null);
     }
 
     @Override
