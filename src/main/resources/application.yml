@@ -1,18 +1,21 @@
 spring:
   datasource:
-    url: "jdbc:h2:mem:candidatecontroldb;DB_CLOSE_ON_EXIT=FALSE"
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    url: jdbc:mysql://localhost:3306/candidatecontroldb?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ZemoKyy# # Reemplazar con la contraseña real de tu base de datos MySQL
 
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  h2:
+    console:
+      enabled: false
 
 logging:
   level:
@@ -29,4 +32,4 @@ server:
 
 jwt:
   secret: CABD8E152F81B8FBEBB3885B66E16A9085E1B67180D43738D2E969573D35D4F2
-  validityInMilliseconds: 3600000 # 120000
+  validityInMilliseconds: 3600000 # 1 hora expresada en milisegundos
